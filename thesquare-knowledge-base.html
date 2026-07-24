@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TheSqua.re — Knowledge Base</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1C1C1C;
+    --teal:#E23534;
+    --teal-light:#B92B2A;
+    --paper:#FFFFFF;
+    --paper-alt:#FBEDEC;
+    --brass:#FFE3E2;
+    --brass-dark:#C42E2D;
+    --stamp:#1C1C1C;
+    --line:#F0DFDE;
+    --muted:#7A6E6C;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 32px;
+    max-width:1120px;margin:0 auto;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Fraunces',serif;font-weight:600;font-size:19px;
+  }
+  .logo .mark{
+    width:30px;height:30px;border-radius:8px;background:var(--teal);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--brass);font-family:'Fraunces',serif;font-weight:700;font-size:15px;
+  }
+  .logo .tag{color:var(--muted);font-size:13px;font-weight:400;font-family:'Inter',sans-serif;margin-left:2px;}
+  .nav-links{display:flex;gap:34px;font-size:14.5px;font-weight:500;}
+  .nav-links a{text-decoration:none;color:var(--ink);opacity:0.75;transition:opacity .15s;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--teal);color:#fff;border:none;border-radius:999px;
+    padding:10px 20px;font-size:13.5px;font-weight:600;cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--teal);
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    padding:76px 0 96px;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(circle at 85% 15%, rgba(255,255,255,0.16), transparent 45%),
+      radial-gradient(circle at 8% 90%, rgba(255,255,255,0.10), transparent 40%);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:1;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11.5px;color:var(--brass);
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--brass);}
+  .hero h1{
+    font-size:52px;line-height:1.06;color:#fff;margin:0 0 18px;
+    max-width:680px;
+  }
+  .hero h1 em{color:var(--brass);font-style:normal;}
+  .hero p.lead{
+    font-size:17px;line-height:1.55;color:rgba(255,255,255,0.72);
+    max-width:520px;margin:0 0 40px;
+  }
+
+  .ask-box{
+    background:#fff;
+    border-radius:16px;
+    padding:8px 8px 8px 22px;
+    display:flex;align-items:center;gap:12px;
+    max-width:620px;
+    box-shadow:0 24px 48px rgba(0,0,0,0.25);
+  }
+  .ask-box svg{flex-shrink:0;opacity:0.45;}
+  .ask-box input{
+    flex:1;border:none;outline:none;font-size:15.5px;
+    font-family:'Inter',sans-serif;color:var(--ink);
+    padding:14px 0;background:transparent;
+  }
+  .ask-box input::placeholder{color:#9CA39B;}
+  .ask-box button{
+    background:var(--ink);color:#fff;border:none;border-radius:10px;
+    padding:12px 20px;font-size:13.5px;font-weight:600;cursor:pointer;
+    font-family:'Inter',sans-serif;white-space:nowrap;
+  }
+
+  .chip-row{
+    display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;max-width:640px;
+  }
+  .chip{
+    font-size:12.5px;color:rgba(255,255,255,0.82);
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:999px;padding:7px 14px;
+    cursor:pointer;transition:all .15s;
+    font-family:'Inter',sans-serif;
+  }
+  .chip:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.4);}
+
+  /* postmark stamp signature */
+  .postmark{
+    position:absolute;
+    top:64px;right:64px;
+    width:132px;height:132px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,0.55);
+    display:flex;align-items:center;justify-content:center;
+    transform:rotate(-9deg);
+  }
+  .postmark::before{
+    content:"";
+    position:absolute;inset:8px;
+    border-radius:50%;
+    border:1px dashed rgba(255,255,255,0.4);
+  }
+  .postmark-text{
+    text-align:center;color:var(--brass);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;letter-spacing:0.14em;line-height:1.6;
+  }
+  .postmark-text .big{font-size:15px;display:block;font-weight:500;}
+  @media (max-width:860px){.postmark{display:none;}}
+
+  /* ---------- SECTION LABELS ---------- */
+  .section{padding:80px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:40px;gap:24px;flex-wrap:wrap;
+  }
+  .kicker{
+    font-size:11.5px;color:var(--brass-dark);margin-bottom:10px;font-weight:600;
+  }
+  .section-head h2{font-size:30px;margin:0;color:var(--ink);}
+  .section-head p{font-size:14.5px;color:var(--muted);max-width:360px;margin:0;line-height:1.5;}
+
+  /* ---------- CATEGORY TAGS (luggage tag motif) ---------- */
+  .cat-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  @media (max-width:760px){.cat-grid{grid-template-columns:1fr 1fr;}}
+  .tag-card{
+    position:relative;
+    background:var(--paper-alt);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:26px 22px 22px;
+    transition:transform .18s ease, box-shadow .18s ease;
+    cursor:pointer;
+  }
+  .tag-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(226,53,52,0.1);}
+  .tag-card::before{
+    /* punch hole */
+    content:"";
+    position:absolute;top:18px;left:22px;
+    width:9px;height:9px;border-radius:50%;
+    background:var(--paper);
+    border:1.5px solid var(--line);
+  }
+  .tag-card .icon{
+    width:38px;height:38px;border-radius:9px;background:var(--teal);
+    display:flex;align-items:center;justify-content:center;color:var(--brass);
+    margin:0 0 34px auto;
+  }
+  .tag-card h3{font-size:17px;margin:0 0 6px;color:var(--ink);}
+  .tag-card p{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.45;}
+  .tag-card .count{
+    font-size:11px;color:var(--teal-light);font-weight:600;
+    display:flex;align-items:center;gap:6px;
+  }
+  .tag-card .code{
+    position:absolute;bottom:18px;right:20px;
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:#B9B2A0;
+    letter-spacing:0.08em;
+  }
+
+  /* ---------- POPULAR QUESTIONS (ticket stub accordion) ---------- */
+  .q-list{display:flex;flex-direction:column;gap:14px;}
+  .q-card{
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--paper);
+    overflow:hidden;
+  }
+  .q-head{
+    display:flex;align-items:center;gap:16px;
+    padding:20px 22px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .q-head .qmark{
+    width:30px;height:30px;border-radius:50%;
+    background:var(--paper-alt);color:var(--teal);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif;font-weight:600;font-size:14px;
+    flex-shrink:0;
+  }
+  .q-head .qtext{flex:1;font-size:15.5px;font-weight:600;color:var(--ink);}
+  .q-head .qcat{
+    font-size:10.5px;color:var(--brass-dark);font-weight:600;
+    white-space:nowrap;
+  }
+  .q-head .chev{
+    width:18px;height:18px;flex-shrink:0;color:var(--muted);
+    transition:transform .2s ease;
+  }
+  .q-card.open .chev{transform:rotate(180deg);}
+  .q-body{
+    max-height:0;overflow:hidden;transition:max-height .28s ease;
+  }
+  .q-card.open .q-body{max-height:260px;}
+  .q-body-inner{
+    padding:0 22px 22px 68px;
+    border-top:1px dashed var(--line);
+    margin:0 22px;
+    padding-top:16px;
+  }
+  .q-body p{font-size:14px;line-height:1.62;color:#3C4A44;margin:0 0 14px;}
+  .ai-tag{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;color:var(--teal-light);
+    background:rgba(226,53,52,0.06);
+    border-radius:999px;padding:5px 12px 5px 8px;font-weight:600;
+  }
+  .ai-tag .dot-icon{width:14px;height:14px;flex-shrink:0;}
+
+  /* ---------- AI CONCIERGE BANNER ---------- */
+  .ai-banner{
+    background:var(--paper-alt);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:48px 48px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:40px;
+    position:relative;
+    overflow:hidden;
+  }
+  @media (max-width:760px){.ai-banner{flex-direction:column;align-items:flex-start;padding:34px 26px;}}
+  .ai-banner-text h3{font-size:24px;margin:0 0 10px;color:var(--ink);max-width:360px;}
+  .ai-banner-text p{font-size:14px;color:var(--muted);max-width:360px;margin:0;line-height:1.5;}
+  .ai-banner-form{
+    display:flex;background:#fff;border-radius:12px;padding:6px;
+    box-shadow:0 10px 26px rgba(226,53,52,0.08);flex-shrink:0;
+    width:380px;
+  }
+  @media (max-width:760px){.ai-banner-form{width:100%;}}
+  .ai-banner-form input{
+    flex:1;border:none;outline:none;padding:10px 12px;font-size:13.5px;
+    font-family:'Inter',sans-serif;
+  }
+  .ai-banner-form button{
+    background:var(--stamp);color:#fff;border:none;border-radius:8px;
+    padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:rgba(255,255,255,0.7);padding:56px 0 32px;margin-top:40px;}
+  .foot-grid{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;
+    padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  @media (max-width:760px){.foot-grid{grid-template-columns:1fr 1fr;}}
+  .foot-grid h4{font-size:12px;color:rgba(255,255,255,0.45);margin:0 0 14px;font-weight:600;}
+  .foot-grid ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+  .foot-grid a{font-size:13.5px;text-decoration:none;color:rgba(255,255,255,0.78);}
+  .foot-bottom{
+    display:flex;justify-content:space-between;padding-top:24px;font-size:12px;
+    color:rgba(255,255,255,0.4);flex-wrap:wrap;gap:10px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="mark">S</div>
+    thesqua.re <span class="tag">Knowledge Base</span>
+  </div>
+  <div class="nav-links">
+    <a href="#categories">Categories</a>
+    <a href="#questions">Popular questions</a>
+    <a href="#ask">Ask AI</a>
+  </div>
+  <button class="nav-cta">Contact support</button>
+</nav>
+
+<header class="hero">
+  <div class="postmark">
+    <div class="postmark-text">KNOWLEDGE<br/><span class="big">BASE</span>EST. GLOBAL</div>
+  </div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow"><span class="dot"></span> 400+ answers, updated weekly</div>
+    <h1>Every question a<br/>traveler asks, <em>answered</em><br/>before they arrive.</h1>
+    <p class="lead">Search bookings, corporate programs, amenities, and relocation policies — or ask in your own words and get a direct, sourced answer.</p>
+
+    <div class="ask-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="ask-input" type="text" placeholder="Can I book an apartment for less than 7 nights?" />
+      <button>Ask</button>
+    </div>
+
+    <div class="chip-row">
+      <div class="chip">Cancellation policy</div>
+      <div class="chip">Corporate account setup</div>
+      <div class="chip">What's included</div>
+      <div class="chip">squ.air miles</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- CATEGORIES -->
+  <section class="section" id="categories">
+    <div class="section-head">
+      <div>
+        <div class="kicker">BROWSE BY TOPIC</div>
+        <h2>Six places to start</h2>
+      </div>
+      <p>Every article is organized the way travelers actually think about their stay — not how our teams are structured internally.</p>
+    </div>
+
+    <div class="cat-grid">
+
+      <div class="tag-card">
+        <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M12 7v10M2 12h4M18 12h4"/></svg></div>
+        <h3>Booking &amp; Payments</h3>
+        <p>How to search, book, and pay for a stay — invoices included.</p>
+        <div class="count">54 articles</div>
+        <div class="code">KB · BKG</div>
+      </div>
+
+      <div class="tag-card">
+        <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+        <h3>Corporate Programs</h3>
+        <p>Company accounts, travel policy tools, and reporting.</p>
+        <div class="count">38 articles</div>
+        <div class="code">KB · CORP</div>
+      </div>
+
+      <div class="tag-card">
+        <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="M10.5 12.5L20 3M17 3h3v3"/></svg></div>
+        <h3>Apartments &amp; Amenities</h3>
+        <p>What's included in every stay, and what's optional.</p>
+        <div class="count">61 articles</div>
+        <div class="code">KB · AMN</div>
+      </div>
+
+      <div class="tag-card">
+        <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M8 2v4M16 2v4M9 15l2 2 4-4"/></svg></div>
+        <h3>Cancellations &amp; Changes</h3>
+        <p>Rebooking, refund windows, and flexible-stay terms.</p>
+        <div class="count">29 articles</div>
+        <div class="code">KB · CXL</div>
+      </div>
+
+      <div class="tag-card">
+        <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg></div>
+        <h3>Relocation &amp; Long Stays</h3>
+        <p>Moving cities, extended bookings, and settling in.</p>
+        <div class="count">33 articles</div>
+        <div class="code">KB · RLC</div>
+      </div>
+
+      <div class="tag-card">
+        <div class="icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 6.9L12 17.3 5.7 20.8l1.7-6.9L2 9.2l7.1-.6z"/></svg></div>
+        <h3>Loyalty &amp; Referrals</h3>
+        <p>How squ.air miles, tiers, and referral rewards work.</p>
+        <div class="count">17 articles</div>
+        <div class="code">KB · LYT</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- POPULAR QUESTIONS -->
+  <section class="section" id="questions">
+    <div class="section-head">
+      <div>
+        <div class="kicker">MOST ASKED</div>
+        <h2>Popular questions this month</h2>
+      </div>
+      <p>Pulled from real search and chat queries, refreshed every week.</p>
+    </div>
+
+    <div class="q-list" id="q-list">
+
+      <div class="q-card open">
+        <div class="q-head">
+          <div class="qmark">Q</div>
+          <div class="qtext">Can I book a serviced apartment for less than 7 nights?</div>
+          <div class="qcat mono">Booking</div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="q-body">
+          <div class="q-body-inner">
+            <p>Yes. Most apartments in our network are bookable for 3 nights or more, with select cities offering nightly stays from just 1 night. Minimum stay is shown on every listing before you book, and rates typically drop the longer you stay.</p>
+            <span class="ai-tag"><svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Also surfaced in AI Overviews &amp; ChatGPT answers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="qmark">Q</div>
+          <div class="qtext">What's included in the nightly rate?</div>
+          <div class="qcat mono">Amenities</div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="q-body">
+          <div class="q-body-inner">
+            <p>Every stay includes a fully equipped kitchen, high-speed Wi-Fi, weekly housekeeping, and 24/7 support. Utilities and building amenities vary by property and are always listed on the apartment page before checkout.</p>
+            <span class="ai-tag"><svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Also surfaced in AI Overviews &amp; ChatGPT answers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="qmark">Q</div>
+          <div class="qtext">How do I set up a corporate account for my company?</div>
+          <div class="qcat mono">Corporate</div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="q-body">
+          <div class="q-body-inner">
+            <p>Start from the Corporate Programs page and submit your company details for verification. Once approved, you'll get a dedicated account manager, centralized billing, and policy controls for anyone booking under your company.</p>
+            <span class="ai-tag"><svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Also surfaced in AI Overviews &amp; ChatGPT answers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="qmark">Q</div>
+          <div class="qtext">Can I change my dates after booking?</div>
+          <div class="qcat mono">Cancellations</div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="q-body">
+          <div class="q-body-inner">
+            <p>Date changes are free up to 48 hours before check-in on flexible-rate bookings, subject to availability. Non-flexible rates may carry a change fee — this is always shown at checkout, never after the fact.</p>
+            <span class="ai-tag"><svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Also surfaced in AI Overviews &amp; ChatGPT answers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="qmark">Q</div>
+          <div class="qtext">Do you offer apartments for relocations longer than 6 months?</div>
+          <div class="qcat mono">Relocation</div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="q-body">
+          <div class="q-body-inner">
+            <p>Yes — long-stay rates apply automatically past 28 nights, and our relocation team can help coordinate multi-month or open-ended stays, including mid-assignment apartment changes if your plans shift.</p>
+            <span class="ai-tag"><svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Also surfaced in AI Overviews &amp; ChatGPT answers</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="q-card">
+        <div class="q-head">
+          <div class="qmark">Q</div>
+          <div class="qtext">How do squ.air miles work?</div>
+          <div class="qcat mono">Loyalty</div>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="q-body">
+          <div class="q-body-inner">
+            <p>You earn squ.air miles on every completed stay and every friend you refer. Miles can be redeemed for discounts on future bookings, and there's no expiry as long as your account stays active.</p>
+            <span class="ai-tag"><svg class="dot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> Also surfaced in AI Overviews &amp; ChatGPT answers</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AI CONCIERGE -->
+  <section class="section" id="ask" style="padding-top:0;">
+    <div class="ai-banner">
+      <div class="ai-banner-text">
+        <h3>Still can't find it?</h3>
+        <p>Ask our AI concierge in plain language — it reads every article in the knowledge base and answers with sources.</p>
+      </div>
+      <div class="ai-banner-form">
+        <input type="text" placeholder="Type your question…" />
+        <button>Ask concierge</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo" style="color:#fff;">
+          <div class="mark">S</div>
+          thesqua.re
+        </div>
+        <p style="font-size:13px;line-height:1.6;color:rgba(255,255,255,0.5);margin-top:14px;max-width:260px;">
+          Serviced apartments and corporate housing in over 900 cities worldwide.
+        </p>
+      </div>
+      <div>
+        <h4>TOPICS</h4>
+        <ul>
+          <li><a href="#">Booking &amp; Payments</a></li>
+          <li><a href="#">Corporate Programs</a></li>
+          <li><a href="#">Amenities</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>SUPPORT</h4>
+        <ul>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Chat with concierge</a></li>
+          <li><a href="#">Report an issue</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>COMPANY</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">thesqua.re</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© TheSqua.re Group. Knowledge base UI concept.</div>
+      <div>400+ articles · updated weekly</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.q-head').forEach(head => {
+    head.addEventListener('click', () => {
+      const card = head.parentElement;
+      const isOpen = card.classList.contains('open');
+      document.querySelectorAll('.q-card').forEach(c => c.classList.remove('open'));
+      if (!isOpen) card.classList.add('open');
+    });
+  });
+
+  const prompts = [
+    "Can I book an apartment for less than 7 nights?",
+    "What documents do I need for a corporate booking?",
+    "Is housekeeping included in my stay?",
+    "How do I cancel a reservation?",
+    "Do you offer relocation packages over 6 months?"
+  ];
+  const input = document.getElementById('ask-input');
+  let i = 0;
+  setInterval(() => {
+    i = (i + 1) % prompts.length;
+    input.setAttribute('placeholder', prompts[i]);
+  }, 3200);
+</script>
+
+</body>
+</html>
